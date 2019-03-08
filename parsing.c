@@ -31,6 +31,13 @@ int pars_s(int ac)
         return (0);
 }
 
+int pars_no_flag(int ac)
+{
+        if (ac != 2)
+                return (84);
+        return (0);
+}
+
 int pars_command(int ac, char **av)
 {
         int opt = 0;
@@ -46,8 +53,9 @@ int pars_command(int ac, char **av)
                         return (pars_p(ac));
                 else if (opt == 's')
                         return (pars_s(ac));
+                
         }
-        return (84);
+        return (pars_no_flag(ac));
 }
 
 int main(int ac, char **av)
