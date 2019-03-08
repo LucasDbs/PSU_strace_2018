@@ -1,21 +1,28 @@
-NAME=test
-ASM=nasm
-LD=gcc
-SRC=main.S
-OBJ=$(SRC:.S=.o)
-LDFLAGS=-fno -builtin
-CFLAGS=-f elf
+##
+## EPITECH PROJECT, 2018
+## Makefile
+## File description:
+## Sabri Ouaked
+##
 
-.S.o:
-	$(ASM) $(CFLAGS) $< -c $@
+NAME	=	strace
 
-$(NAME): $(OBJ)
-	$(LD) $(OBJ) -o $(NAME) $(LDFLAGS)
+SRC	=	src/main.c	\
+		src/parsing.c
 
-all: $(NAME)
+OBJ	=	$(SRC:.c=.o)
+
+CFLAGS	=	-g -W -Wall -Wextra -Iinclude/
+
+all:		$(NAME)
+
+$(NAME):
+		gcc -o $(NAME) $(SRC) $(CFLAGS)
 
 clean:
-	rm -rf $(OBJ)
+		rm -f $(OBJ)
 
-fclean: clean
-	rm -rf $(NAME)
+fclean:		clean
+		rm -f $(NAME)
+
+re:		fclean all

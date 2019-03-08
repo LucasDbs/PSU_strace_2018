@@ -57,21 +57,3 @@ int pars_command(int ac, char **av)
         }
         return (pars_no_flag(ac));
 }
-
-int main(int ac, char **av)
-{
-        if (pars_command(ac, av) == 84)
-                return (84);
-        // pid_t pid = 0;
-
-        // if (ac != 2)
-        //         return (84);
-        // pid = fork();
-        // if (pid == -1)
-        //         return (84);
-        // else if (pid == 0)
-        //         printf("dans le fils et pid = %d\n", getpid());
-        // else
-        //         printf("dans le pere et pid = %d\n", getpid());
-        return 0;
-}
