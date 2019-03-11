@@ -17,8 +17,10 @@
 #include <sys/syscall.h>
 #include "parsing.h"
 
-int waitchild(pid_t pid) {
+int waitchild(pid_t pid)
+{
         int status;
+
         waitpid(pid, &status, 0);
         if(WIFSTOPPED(status)) {
                 return 0;
@@ -34,17 +36,22 @@ int waitchild(pid_t pid) {
 
 int trace(pid_t child)
 {
-        unsigned long instruction, opcode1, opcode2, ip;
-        unsigned long jmps = 0;
+        long ret = 0;
+        unsigned char primary;
+        unsigned char secondary;
+        long jmps = 0;
 
         do {
-                ip = ptrace(PTRACE_PEEKUSER, child, 8 * RIP, NULL);
-                instruction = ptrace(PTRACE_PEEKTEXT, child, ip, NULL);
-                opcode1 = instruction & 0x00000000000000FF;
-                opcode2 = (instruction & 0x000000000000FF00) >> 8;
-                if((opcode1 >= 0x70 && opcode1 <= 0x7F) || (opcode1 == 0x0F && (opcode2 >= 0x83 && opcode2 <= 0x87))) {
-                        jmps = jmps + 1;
-                }
+                ret = ptrace(PTRACE_PEEKUSER, child, 8 * RIP, NULL);
+                // printf("ret = %ld\n", ret);
+                ret = ptrace(PTRACE_PEEKTEXT, child, ret, NULL);
+                // printf("ret = %ld\n", ret);
+                primary = (unsigned)0xFF & ret;
+                secondary = ((unsigned)0xFF00 & ret) >> 8;
+                // printf("primary = %c et secondary = %c\n", primary, secondary);
+                return 0;
+                if ((primary == 0xCD && secondary == 0x80) || (primary == 0x0F && secondary == 0x05))
+                        jmps++;
                 ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         } while(waitchild(child) < 1);
         printf("n=> There are %lu jumps\n", jmps);
