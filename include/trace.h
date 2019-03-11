@@ -9,9 +9,6 @@
 #define PARSING_H
 
 int pars_command(int ac, char **av);
-int trace_pid(char **av);
-
-//
-int test_trace();
+int launch(int argc, char ** argv);
 
 #endif // PARSING_H

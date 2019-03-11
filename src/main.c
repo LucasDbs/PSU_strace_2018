@@ -5,16 +5,7 @@
 ** main.c
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ptrace.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <sys/user.h>
-#include <sys/reg.h>
-#include <sys/syscall.h>
+#include "trace.h"
 #include "parsing.h"
 
 int waitchild(pid_t pid)
@@ -60,21 +51,10 @@ int trace(pid_t child)
 
 int main(int argc, char ** argv)
 {
-    pid_t child = fork();
-
-    if(child == 0) {
-        ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-        execve(argv[1], argv + 1, NULL);
-        // execl("/bin/ls", "ls", NULL);
-    }
-    else {
-        // wait for the child to stop
-        waitchild(child);
-        trace(child);
-    }
-    return 0;
-}
         // // if (pars_command(ac, av) == 84)
         // //         return (84);
         // test_trace(av);
-        // return (0);
+        launch(argc, argv);
+        return (0);
+
+}
