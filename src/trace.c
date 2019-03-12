@@ -48,11 +48,16 @@ int trace(pid_t child)
                 secondary = ((unsigned)0xFF00 & ret) >> 8;
                 if ((primary == 0xCD && secondary == 0x80) || (primary == 0x0F && secondary == 0x05)) {
                         ptrace(PTRACE_GETREGS, child, NULL, &regs);
-                        printf("ret = %lx  prim=%lx sec=%x rax: %lld\n", ret, primary, secondary, regs.rax);
+                        if (regs.rax == SYS_write) {
+                                printf("write(0x%llx, 0x%llx, 0x%llx) = 0x%llx\n", regs.rdi, regs.rsi, regs.rdx, regs.rdx);
+                                printf("test %llx\n", regs.r11);
+                        }
+                                // printf("ret = %lx  prim=%x sec=%x rax: %lld orig_rax=%llu\n", ret, primary, secondary, regs.rax, regs.orig_rax);
                         jmps++;
                 }
                 ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         } while(waitchild(child) < 1);
+        // printf("SYS_write = %d\n", SYS_write);
         printf("=> There are %lu jumps\n", jmps);
         return (0);
 }
@@ -68,7 +73,7 @@ int launch(int argc, char ** argv)
         // kill(getpid(), SIGUSR1);
 
         execve(argv[1], argv + 1, NULL);
-        execl("/bin/ls", "ls", NULL);
+        // execl("/bin/ls", "ls", NULL);
     }
     else {
         // wait for the child to stop
