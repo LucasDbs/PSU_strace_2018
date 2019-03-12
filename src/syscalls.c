@@ -411,5 +411,4 @@ const syscalls_t syscalls_list[] =
     {"kcmp", 5,
     {"pid_t", "pid_t", "int", "unsigned long", "unsigned long"}, "int"},
     {"finit_module", 3, {"int", "char *", "int"}, "int"},
-    NULL
 };
