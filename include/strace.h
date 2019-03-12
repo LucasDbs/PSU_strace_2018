@@ -11,9 +11,11 @@
 typedef struct syscalls
 {
         char *name;
-        int nb_args;
-        char **args;
+        size_t nb_args;
+        char *args[6];
         char *return_value;
 } syscalls_t;
+
+extern const syscalls_t syscalls_list[];
 
 #endif // STRACE_H
