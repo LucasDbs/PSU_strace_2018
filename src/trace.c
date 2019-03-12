@@ -17,6 +17,16 @@
 #include <sys/reg.h>
 #include <sys/syscall.h>
 #include "parsing.h"
+#include "strace.h"
+
+syscalls_t find_syscall(size_t syscalls_id)
+{
+        int i = 0;      
+        syscalls_t *find = NULL;
+
+
+        
+}
 
 int waitchild(pid_t pid)
 {

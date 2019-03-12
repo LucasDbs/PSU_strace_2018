@@ -5,60 +5,6 @@
 ** pid.c
 */
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-// #include <sys/wait.h>
-// #include <sys/types.h>
-// #include <sys/ptrace.h>
-// #include <sys/user.h>
-
-// int child_process(char **av)
-// {
-//     ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-//     execvp(av[1], av+1);
-//     return (0);
-// }
-
-// int parent_process(pid_t pid)
-// {
-//     int status = 0; 
-//     struct user_regs_struct regs;
-//     int count = 0;
-//     int called =0;
-
-//     wait(&status);
-//     while(status == 1407){
-//         ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-//         printf("%lld\n", regs.rdi);
-//         if (!called) {
-//             count++;
-//             called=1;
-//             printf("Syscall\n");
-//         } else
-//             called = 0; 
-//         ptrace(PTRACE_SINGLESTEP, pid, NULL, NULL); 
-//         wait(&status); 
-//     }
-//     printf("there is %d syscalls\n", count);
-//     return (status);
-// }
-
-// int trace_pid(char **av)
-// {
-//     pid_t pid = fork();
-
-//     if (pid < 0) {
-//         perror("fork failed");
-//         exit(84);
-//     } else if (pid == 0) {
-//         child_process(av);
-//     } else {
-//         parent_process(pid);
-//     }
-//     return 0; 
-// }
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

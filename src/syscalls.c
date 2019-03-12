@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** tablo_de_mor.c
 ** File description:
-** GILLIERS Renaud
+** Syscalls list
 */
 
 #include <stdio.h>
@@ -13,7 +13,7 @@
 #include <sys/user.h>
 #include "strace.h"
 
-const list_t syscall_list[] =
+const syscalls_t syscalls_list[] =
 {
     {"read", 3, {"int", "char *", "size_t"}, "ssize_t"},
     {"write", 3, {"int", "char *", "size_t"}, "ssize_t"},
@@ -410,5 +410,6 @@ const list_t syscall_list[] =
     "struct iovec *", "unsigned long", "unsigned long"}, "ssize_t"},
     {"kcmp", 5,
     {"pid_t", "pid_t", "int", "unsigned long", "unsigned long"}, "int"},
-    {"finit_module", 3, {"int", "char *", "int"}, "int"}
+    {"finit_module", 3, {"int", "char *", "int"}, "int"},
+    NULL
 };

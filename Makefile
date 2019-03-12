@@ -10,7 +10,8 @@ NAME	=	strace
 SRC	=	src/main.c	\
 		src/parsing.c	\
 		src/trace.c 	\
-		src/pid.c
+		src/pid.c	\
+		src/syscalls.c
 
 OBJ	=	$(SRC:.c=.o)
 
