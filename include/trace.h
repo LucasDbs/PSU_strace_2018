@@ -5,10 +5,15 @@
 ** parsing.c
 */
 
-#if !defined(PARSING_H)
-#define PARSING_H
+#if !defined(TRACE_H)
+#define TRACE_H
+
+#include <sys/types.h>
 
 int pars_command(int ac, char **av);
-int launch(int argc, char ** argv);
+int launch(char **av);
+int launch_pid(pid_t pid);
+int strace(int ac, char **av);
 
-#endif // PARSING_H
+
+#endif // TRACE_H
