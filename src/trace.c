@@ -55,7 +55,8 @@ int print_syscall(pid_t child)
                         printf("0x%llx, ", register_find(i, regs));
                 }
         }
-        printf(") = 0x%llx\n", regs.rax);
+        i--;
+        printf(") = 0x%llx\n", regs.rbx);
         return (0);
 }
 
@@ -85,8 +86,9 @@ int trace(pid_t child)
                 ret = ptrace(PTRACE_PEEKTEXT, child, ret, NULL);
                 primary = (unsigned)0xFF & ret;
                 secondary = ((unsigned)0xFF00 & ret) >> 8;
-                if ((primary == 0xCD && secondary == 0x80) || (primary == 0x0F && secondary == 0x05))
+                if ((primary == 0xCD && secondary == 0x80) || (primary == 0x0F && secondary == 0x05)) {
                         print_syscall(child);
+                }
                 ptrace(PTRACE_SINGLESTEP, child, NULL, NULL);
         } while (waitchild(child) < 1);
         return (0);
