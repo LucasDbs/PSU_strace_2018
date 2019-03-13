@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
+#include <stdlib.h>
 #include "trace.h"
 
 int helper(int ac)
