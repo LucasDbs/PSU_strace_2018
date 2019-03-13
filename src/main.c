@@ -8,11 +8,7 @@
 #include "trace.h"
 #include "parsing.h"
 
-int main(int argc, char ** argv)
+int main(int ac, char **av)
 {
-        // // if (pars_command(ac, av) == 84)
-        // //         return (84);
-        // test_trace(av);
-        launch(argc, argv);
-        return (0);
+        return (strace(ac, av));
 }

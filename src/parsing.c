@@ -8,8 +8,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <getopt.h>
+#include <string.h>
+#include "trace.h"
 
-int pars_h(int ac)
+int helper(int ac)
 {
         if (ac != 2)
                 return (84);
@@ -17,11 +19,14 @@ int pars_h(int ac)
         return (0);
 }
 
-int pars_p(int ac)
+int pid_tracer(int ac, char **av)
 {
+        pid_t pid;
+ 
         if (ac != 3)
                 return (84);
-        return (0);
+        pid = atoi(av[2]);
+        return (launch_pid(pid));
 }
 
 int pars_s(int ac)
@@ -31,14 +36,14 @@ int pars_s(int ac)
         return (0);
 }
 
-int pars_no_flag(int ac)
+int without_flag(int ac, char **av)
 {
         if (ac != 2)
                 return (84);
-        return (0);
+        return (launch(av));
 }
 
-int pars_command(int ac, char **av)
+int strace(int ac, char **av)
 {
         int opt = 0;
         static struct option options[] = {
@@ -48,12 +53,11 @@ int pars_command(int ac, char **av)
 
         while ((opt = getopt_long(ac, av, "p:s:", options, NULL)) != -1) {
                 if (opt == 'h')
-                        return (pars_h(ac));
+                        return (helper(ac));
                 else if (opt == 'p')
-                        return (pars_p(ac));
+                        return (pid_tracer(ac, av));
                 else if (opt == 's')
                         return (pars_s(ac));
-                
         }
-        return (pars_no_flag(ac));
+        return (without_flag(ac, av));
 }

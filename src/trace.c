@@ -21,8 +21,7 @@
 
 long long register_find(int i, struct user_regs_struct regs)
 {
-        switch (i)
-        {
+        switch (i) {
                 case 0:
                         return regs.rdi;
                 case 1:
@@ -50,10 +49,11 @@ int print_syscall(pid_t child)
         syscall = syscalls_list[regs.rax];
         printf("%s(", syscall.name);
         for (i = 0; i != syscall.nb_args; i++) {
-                if (i == syscall.nb_args - 1)
+                if (i == syscall.nb_args - 1) {
                         printf("0x%llx", register_find(i, regs));
-                else
+                } else {
                         printf("0x%llx, ", register_find(i, regs));
+                }
         }
         printf(") = 0x%llx\n", regs.rax);
         return (0);
@@ -64,11 +64,11 @@ int waitchild(pid_t pid)
         int status = 0;
         
         waitpid(pid, &status, 0);
-        if (WIFSTOPPED(status))
+        if (WIFSTOPPED(status)) {
                 return (0);
-        else if (WIFEXITED(status))
+        } else if (WIFEXITED(status)) {
                 return (1);
-        else {
+        } else {
                 printf("%d raised an unexpected status %d", pid, status);
                 return (1);
         }
@@ -92,23 +92,27 @@ int trace(pid_t child)
         return (0);
 }
 
-int launch(int argc, char ** argv)
+
+int launch_pid(pid_t pid)
+{
+        printf("inside");
+        ptrace(PTRACE_ATTACH, pid, NULL, NULL);
+        waitchild(pid);
+        trace(pid);
+        ptrace(PTRACE_DETACH, pid, NULL, NULL);
+        return 0;
+}
+
+int launch(char **av)
 {
         pid_t child = fork();
 
-        if(child == 0) {
+        if (child == 0) {
                 ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-                // kill(getpid(), SIGUSR1);
-                // write(1, "test", 4);
-                // kill(getpid(), SIGUSR1);
-
-                execve(argv[1], argv + 1, NULL);
-                // execl("/bin/ls", "ls", NULL);
+                execve(av[1], av + 1, NULL);
         } else {
-                // wait for the child to stop
                 waitchild(child);
                 trace(child);
         }
         return 0;
 }
-
