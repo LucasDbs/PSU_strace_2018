@@ -5,6 +5,8 @@
 ** trace.c
 */
 
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,6 +47,7 @@ int print_syscall(pid_t child)
         struct user_regs_struct regs;
         syscalls_t syscall;
         size_t i = 0;
+        // long long *test = NULL;
 
         ptrace(PTRACE_GETREGS, child, NULL, &regs);
         syscall = syscalls_list[regs.rax];
@@ -57,6 +60,11 @@ int print_syscall(pid_t child)
         }
         i--;
         printf(") = 0x%llx\n", regs.rbx);
+        // test = &regs;
+        // while (test) {
+        //         printf("%lld\n", *test);
+        //         test++;
+        // }
         return (0);
 }
 
@@ -97,20 +105,21 @@ int trace(pid_t child)
 int launch(int argc, char ** argv)
 {
         pid_t child = fork();
+        int fd = open("/dev/null", O_WRONLY);
 
-        if(child == 0) {
+        if (fd == -1) {
+                perror("fd failed");
+        }
+        if (child == 0) {
+                dup2(fd, STDOUT_FILENO);
                 ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-                // kill(getpid(), SIGUSR1);
-                // write(1, "test", 4);
-                // kill(getpid(), SIGUSR1);
-
                 execve(argv[1], argv + 1, NULL);
-                // execl("/bin/ls", "ls", NULL);
         } else {
                 // wait for the child to stop
                 waitchild(child);
                 trace(child);
         }
+        close(fd);
         return 0;
 }
 
