@@ -124,7 +124,7 @@ int launch(char **av)
         if (child == 0) {
                 dup2(fd, STDOUT_FILENO);
                 ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-                execve(argv[1], argv + 1, NULL);
+                execve(av[1], av + 1, NULL);
         } else {
                 waitchild(child);
                 trace(child);
