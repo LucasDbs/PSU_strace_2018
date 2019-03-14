@@ -46,25 +46,18 @@ int print_syscall(pid_t child)
         struct user_regs_struct regs;
         syscalls_t syscall;
         size_t i = 0;
-        // long long *test = NULL;
 
         ptrace(PTRACE_GETREGS, child, NULL, &regs);
         syscall = syscalls_list[regs.rax];
         printf("%s(", syscall.name);
         for (i = 0; i != syscall.nb_args; i++) {
-                if (i == syscall.nb_args - 1) {
+                if (i == syscall.nb_args - 1)
                         printf("0x%llx", register_find(i, regs));
-                } else {
+                else
                         printf("0x%llx, ", register_find(i, regs));
-                }
         }
         i--;
         printf(") = 0x%llx\n", regs.rbx);
-        // test = &regs;
-        // while (test) {
-        //         printf("%lld\n", *test);
-        //         test++;
-        // }
         return (0);
 }
 
@@ -105,11 +98,14 @@ int trace(pid_t child)
 
 int launch_pid(pid_t pid)
 {
-        printf("inside");
         ptrace(PTRACE_ATTACH, pid, NULL, NULL);
         waitchild(pid);
         trace(pid);
-        ptrace(PTRACE_DETACH, pid, NULL, NULL);
+        // printf("inside");
+        // ptrace(PTRACE_ATTACH, pid, NULL, NULL);
+        // waitchild(pid);
+        // trace(pid);
+        // ptrace(PTRACE_DETACH, pid, NULL, NULL);
         return 0;
 }
 
