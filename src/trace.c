@@ -101,11 +101,7 @@ int launch_pid(pid_t pid)
         ptrace(PTRACE_ATTACH, pid, NULL, NULL);
         waitchild(pid);
         trace(pid);
-        // printf("inside");
-        // ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-        // waitchild(pid);
-        // trace(pid);
-        // ptrace(PTRACE_DETACH, pid, NULL, NULL);
+        ptrace(PTRACE_DETACH, pid, NULL, NULL);
         return 0;
 }
 
