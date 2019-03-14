@@ -10,5 +10,5 @@
 
 int main(int ac, char **av)
 {
-        return (strace(ac, av));
+    return (strace(ac, av));
 }
