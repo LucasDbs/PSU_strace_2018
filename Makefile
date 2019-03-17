@@ -7,10 +7,11 @@
 
 NAME	=	strace
 
-SRC	=	src/main.c	\
-		src/parsing.c	\
-		src/trace.c 	\
-		src/syscalls.c
+SRC	=	src/main.c		\
+		src/parsing.c		\
+		src/trace.c 		\
+		src/syscalls.c		\
+		src/find_register.c
 
 OBJ	=	$(SRC:.c=.o)
 

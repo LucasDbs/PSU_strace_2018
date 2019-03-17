@@ -5,10 +5,9 @@
 ** main.c
 */
 
-#include "trace.h"
-#include "parsing.h"
+#include "strace.h"
 
 int main(int ac, char **av)
 {
-    return (strace(ac, av));
+        return (strace(ac, av));
 }
